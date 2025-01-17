@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, Http404
+import json
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 metas = [
@@ -39,6 +41,7 @@ metas = [
 def hogar(request):
     return HttpResponse('Bienvenid@ a la API de metas!')
 
+@csrf_exempt
 def metas_path(request):
     if request.method == 'GET':
         return get_metas(request)
@@ -63,7 +66,19 @@ def get_meta(request,pk):
     raise Http404('Not found')
 
 def crear_metas(request):
-    return
+    datos = json.loads(request.body)
+    detalles = datos.get('detalles')
+    id = datos.get('id')
+    if len(detalles) < 5:
+        return JsonResponse({'error': 'Detalles debe ser >= 5'}, status=404)
+    elif id:
+        return JsonResponse({ 'error': 'Meta no debe tener id'}, status=404)
+    nueva_meta = {
+        'id': len(metas) + 1,
+        **datos
+    }
+    metas.append(nueva_meta)
+    return JsonResponse(nueva_meta, status=201)
 
 def actualizar_meta(request,pk):
     return
