@@ -1,6 +1,40 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 # Create your views here.
+
+metas = [
+    {
+        'id': 1, 
+        'detalles': 'Correr por 30 minutos',
+        'plazo': 'dia',
+        'frecuencia': 1,
+        'icono': '🏃',
+        'meta': 365,
+        'Fecha limite': '2030-01-01',
+        'completado': 0
+    },
+    {
+        'id': 2, 
+        'detalles': 'Leer los libros de la saga de Dune',
+        'plazo': 'año',
+        'frecuencia': 5,
+        'icono': '📚',
+        'meta': 12,
+        'Fecha limite': '2030-01-01',
+        'completado': 0
+    },
+    {
+        'id': 3, 
+        'detalles': 'Viajar a Japon',
+        'plazo': '5 años',
+        'frecuencia': 1,
+        'icono': '🏃',
+        'meta': 5,
+        'Fecha limite': '2030-01-01',
+        'completado': 0
+        
+    }
+]
 
 def hogar(request):
     return HttpResponse('Bienvenid@ a la API de metas!')
@@ -20,7 +54,7 @@ def meta_path(request,pk):
         return borrar_meta(request,pk)
     
 def get_metas(request):
-    return
+    return JsonResponse(metas, safe=False)
 
 def get_meta(request,pk):
     return
