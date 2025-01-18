@@ -47,12 +47,13 @@ def metas_path(request):
         return get_metas(request)
     elif request.method == 'POST':
         return crear_metas(request)
-    
+
+@csrf_exempt
 def meta_path(request,pk):
     if request.method == 'GET':
         return get_meta(request,pk)
     elif request.method == 'PUT':
-        return actualizar_meta(request)
+        return actualizar_meta(request,pk)
     elif request.method == 'DELETE':
         return borrar_meta(request,pk)
     
@@ -81,7 +82,25 @@ def crear_metas(request):
     return JsonResponse(nueva_meta, status=201)
 
 def actualizar_meta(request,pk):
+    datos = json.loads(request.body)
+    detalles = datos.get('detalles')
+    id = datos.get('id')
+    if len(detalles) < 5:
+        return JsonResponse({'error': 'Detalles debe ser >= 5'}, status=404)
+    elif id:
+        return JsonResponse({ 'error': 'Meta no debe tener id'}, status=404)
+    
+    for meta in metas:
+        if meta['id'] == pk:
+            meta.update(**datos)
+            return JsonResponse(meta)
+    raise Http404('Not found')
     return
 
 def borrar_meta(request,pk):
+    for meta in metas:
+        if meta['id'] == pk:
+            metas.remove(meta)
+            return HttpResponse(status=204)
+    raise Http404('Not Found')
     return
