@@ -90,12 +90,12 @@ def actualizar_meta(request,pk):
     elif id:
         return JsonResponse({ 'error': 'Meta no debe tener id'}, status=404)
     
-    for meta in metas:
-        if meta['id'] == pk:
-            meta.update(**datos)
-            return JsonResponse(meta)
-    raise Http404('Not found')
-    return
+    # for meta in metas:
+    #     if meta['id'] == pk:
+    #         meta.update(**datos)
+    #         return JsonResponse(meta)
+    # raise Http404('Not found')
+    # return
 
 def borrar_meta(request,pk):
     for meta in metas:
