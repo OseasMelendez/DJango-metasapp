@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, Http404
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import Metas
 # Create your views here.
 
 metas = [
@@ -58,6 +59,7 @@ def meta_path(request,pk):
         return borrar_meta(request,pk)
     
 def get_metas(request):
+    metas = list(Metas.objects.all().values())
     return JsonResponse(metas, safe=False)
 
 def get_meta(request,pk):
