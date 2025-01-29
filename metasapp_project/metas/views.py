@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, Http404
+from django.forms.models import model_to_dict
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .models import Metas
@@ -76,12 +77,14 @@ def crear_metas(request):
         return JsonResponse({'error': 'Detalles debe ser >= 5'}, status=404)
     elif id:
         return JsonResponse({ 'error': 'Meta no debe tener id'}, status=404)
-    nueva_meta = {
-        'id': len(metas) + 1,
-        **datos
-    }
-    metas.append(nueva_meta)
-    return JsonResponse(nueva_meta, status=201)
+    # nueva_meta = {
+    #     'id': len(metas) + 1,
+    #     **datos
+    # }
+    # metas.append(nueva_meta)
+    # return JsonResponse(nueva_meta, status=201)
+    nueva_meta = Metas.objects.create(**datos)
+    return JsonResponse(model_to_dict(nueva_meta), status=201)
 
 def actualizar_meta(request,pk):
     datos = json.loads(request.body)
