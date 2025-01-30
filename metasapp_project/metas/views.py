@@ -108,9 +108,12 @@ def actualizar_meta(request,pk):
     
 
 def borrar_meta(request,pk):
-    for meta in metas:
-        if meta['id'] == pk:
-            metas.remove(meta)
-            return HttpResponse(status=204)
-    raise Http404('Not Found')
-    return
+#    for meta in metas:
+#        if meta['id'] == pk:
+#            metas.remove(meta)
+#            return HttpResponse(status=204)
+#    raise Http404('Not Found')
+#    return
+ meta = get_object_or_404(Metas,pk=pk)
+ meta.delete()
+ return HttpResponse(status=204)
