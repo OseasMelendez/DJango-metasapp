@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, JsonResponse, Http404
 from django.forms.models import model_to_dict
 import json
@@ -101,6 +101,11 @@ def actualizar_meta(request,pk):
     #         return JsonResponse(meta)
     # raise Http404('Not found')
     # return
+    get_object_or_404(Metas, pk=pk)
+    Metas.objects.filter(pk=pk).update(**datos)
+    meta_actualizada = Metas.objects.get(id=pk)
+    return JsonResponse(model_to_dict(meta_actualizada))
+    
 
 def borrar_meta(request,pk):
     for meta in metas:
